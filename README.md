@@ -1,5 +1,4 @@
 # fairSlots
-# WebApp1
 
 ## Proposal
 
