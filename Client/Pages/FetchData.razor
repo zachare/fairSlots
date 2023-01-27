@@ -5,13 +5,13 @@
 @attribute [Authorize]
 @inject HttpClient Http
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>Game History</PageTitle>
 
-<h1>Weather forecast</h1>
+<h1>Game History</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (histories == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -21,19 +21,19 @@ else
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Game Number</th>
+                <th>Funds</th>
+                <th>Bet Amount</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var history in histories)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@history.Date.ToShortDateString()</td>
+                    <td>@history.GameNumber</td>
+                    <td>$@history.Funds</td>
+                    <td>$@history.BetAmount</td>
                 </tr>
             }
         </tbody>
@@ -41,13 +41,13 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private GameHistory[]? histories;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+            histories = await Http.GetFromJsonAsync<GameHistory[]>("GameHistory");
         }
         catch (AccessTokenNotAvailableException exception)
         {
