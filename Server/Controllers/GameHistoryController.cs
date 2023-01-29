@@ -1,4 +1,4 @@
-using fairSlots.Shared;
+using fairSlots.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

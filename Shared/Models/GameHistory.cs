@@ -1,4 +1,4 @@
-namespace fairSlots.Shared
+namespace fairSlots.Shared.Models
 {
     public class GameHistory
     {
