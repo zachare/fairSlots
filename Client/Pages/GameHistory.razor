@@ -1,24 +1,74 @@
 ﻿@page "/gamehistory"
+@inject HttpClient HttpClient
+@using fairSlots.Shared
 
 <PageTitle>Game History</PageTitle>
 
-<h3>Game History</h3>
+<h1 style="color:white">Game History</h1>
 
-<table class="="table>
-    <thead>
-        <tr>
-            <th>Game ID</th>
-            <th>User ID</th>
-            <th>Date</th>
-            <th>Funds</th>
-            <th>Win</th>
-            <th>Bet Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<p style="color:white">This component demonstrates fetching data from the server.</p>
+
+string BetString = "";
+
+@if (Games == null)
+{
+    <p style="color:white"><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr style="color:white">
+                <th>Game ID</th>
+                <th>User ID</th>
+                <th>Date</th>
+                <th>Funds</th>
+                <th>Bet Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in Games)
+            {
+                <tr style="color:white">
+                    <td>
+                        @game.GameID
+                    </td>
+                    <td>
+                        @game.UserID
+                    </td>
+                    <td>
+                        @game.Date
+                    </td>
+                    <td>
+                        $@game.Funds
+                    </td>
+                    <td>
+                        @if (game.Win == true)
+                        {
+                <tr style="color:limegreen">
+                    +$@game.BetAmount
+                </tr>
+                }
+                else
+                {
+                <tr style="color:red">
+                    -$@game.BetAmount
+                </tr>
+                }
+                </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 
 @code {
+    private List<Game> Games = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        Games = await HttpClient.GetFromJsonAsync<List<Game>>("Game/List");
+
+    }
 }
