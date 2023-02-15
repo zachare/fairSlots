@@ -30,10 +30,6 @@ else
             @foreach (var history in histories)
             {
                 <tr style="color:white">
-                    <td>@history.Date.ToShortDateString()</td>
-                    <td>@history.GameNumber</td>
-                    <td>$@history.Funds</td>
-                    <td>$@history.BetAmount</td>
                 </tr>
             }
         </tbody>

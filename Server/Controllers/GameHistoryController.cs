@@ -22,10 +22,7 @@ namespace fairSlots.Server.Controllers
         {
             return Enumerable.Range(1, 5).Select(index => new GameHistory
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                GameNumber = Random.Shared.Next(0, 55),
-                Funds = Random.Shared.Next(0, 1000),
-                BetAmount = Random.Shared.Next(0, 50)
+
             })
             .ToArray();
         }
