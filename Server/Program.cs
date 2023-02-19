@@ -1,8 +1,9 @@
-using fairSlots.Server.Data;
+global using fairSlots.Shared;
+global using Microsoft.EntityFrameworkCore;
+global using fairSlots.Server.Data;
 using fairSlots.Server.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.EntityFrameworkCore;
 
 namespace fairSlots
 {
@@ -14,6 +15,8 @@ namespace fairSlots
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            builder.Services.AddDbContext<DataContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();

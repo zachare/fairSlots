@@ -1,24 +1,83 @@
 ﻿@page "/gamehistory"
+@inject IGameService GameService
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization;
+@using fairSlots.Shared
+
 
 <PageTitle>Game History</PageTitle>
 
-<h3>Game History</h3>
+<h1 style="color:white">Game History</h1>
 
-<table class="="table>
-    <thead>
-        <tr>
-            <th>Game ID</th>
-            <th>User ID</th>
-            <th>Date</th>
-            <th>Funds</th>
-            <th>Win</th>
-            <th>Bet Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+string BetString = "";
+
+@if (GameService.Games == null)
+{
+    <p style="color:white"><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr style="color:white">
+                <th>Game ID</th>
+                <th>Player</th>
+                <th>Date</th>
+                <th>Funds</th>
+                <th>Bet Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in GameService.Games)
+            {
+                <tr style="color:white">
+                    <td>
+                        @game.GameID
+                    </td>
+                    <td>
+                        @game.Player?.Username
+                    </td>
+                    <td>
+                        @game.Date
+                    </td>
+                    <td>
+                        $@game.Funds
+                    </td>
+                    <td>
+                        @if (game.Win == true)
+                        {
+                    <tr style="color:limegreen">
+                        +$@game.BetAmount
+                    </tr>
+                        }
+                        else
+                        {
+                    <tr style="color:red">
+                        -$@game.BetAmount
+                    </tr>
+                        }
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="(() => ShowGame(game.GameID))"><i class="oi oi-pencil"></i></button>
+                    </td>
+               </tr>
+            }
+        </tbody>
+    </table>
+}
+
 
 @code {
+    protected override async Task OnInitializedAsync()
+    {
+        await GameService.GetGames();
+    }
+
+    void ShowGame(int id)
+    {
+        NavigationManager.NavigateTo($"gamemod/{id}");
+    }
 
 }
