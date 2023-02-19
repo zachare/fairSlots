@@ -1,16 +1,19 @@
 ﻿@page "/gamehistory"
-@inject HttpClient HttpClient
+@inject IGameService GameService
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization;
 @using fairSlots.Shared
+
 
 <PageTitle>Game History</PageTitle>
 
 <h1 style="color:white">Game History</h1>
 
-<p style="color:white">This component demonstrates fetching data from the server.</p>
-
 string BetString = "";
 
-@if (Games == null)
+@if (GameService.Games == null)
 {
     <p style="color:white"><em>Loading...</em></p>
 }
@@ -20,21 +23,21 @@ else
         <thead>
             <tr style="color:white">
                 <th>Game ID</th>
-                <th>User ID</th>
+                <th>Player</th>
                 <th>Date</th>
                 <th>Funds</th>
                 <th>Bet Amount</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var game in Games)
+            @foreach (var game in GameService.Games)
             {
                 <tr style="color:white">
                     <td>
                         @game.GameID
                     </td>
                     <td>
-                        @game.UserID
+                        @game.Player?.Username
                     </td>
                     <td>
                         @game.Date
@@ -45,18 +48,21 @@ else
                     <td>
                         @if (game.Win == true)
                         {
-                <tr style="color:limegreen">
-                    +$@game.BetAmount
-                </tr>
-                }
-                else
-                {
-                <tr style="color:red">
-                    -$@game.BetAmount
-                </tr>
-                }
-                </td>
-                </tr>
+                    <tr style="color:limegreen">
+                        +$@game.BetAmount
+                    </tr>
+                        }
+                        else
+                        {
+                    <tr style="color:red">
+                        -$@game.BetAmount
+                    </tr>
+                        }
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="(() => ShowGame(game.GameID))"><i class="oi oi-pencil"></i></button>
+                    </td>
+               </tr>
             }
         </tbody>
     </table>
@@ -64,11 +70,14 @@ else
 
 
 @code {
-    private List<Game> Games = new();
-
     protected override async Task OnInitializedAsync()
     {
-        Games = await HttpClient.GetFromJsonAsync<List<Game>>("Game/List");
-
+        await GameService.GetGames();
     }
+
+    void ShowGame(int id)
+    {
+        NavigationManager.NavigateTo($"gamemod/{id}");
+    }
+
 }

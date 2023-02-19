@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fairSlots.Server", "Server\fairSlots.Server.csproj", "{4688583B-05D7-4FA8-B2BB-63D2C0A230A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairSlots.Server", "Server\fairSlots.Server.csproj", "{4688583B-05D7-4FA8-B2BB-63D2C0A230A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fairSlots.Client", "Client\fairSlots.Client.csproj", "{B323998D-E1B9-4C7E-801F-99FC50DCB006}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairSlots.Client", "Client\fairSlots.Client.csproj", "{B323998D-E1B9-4C7E-801F-99FC50DCB006}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fairSlots.Shared", "Shared\fairSlots.Shared.csproj", "{68BDEACF-8BDB-4942-88B1-976D68C70FB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fairSlots.Shared", "Shared\fairSlots.Shared.csproj", "{68BDEACF-8BDB-4942-88B1-976D68C70FB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

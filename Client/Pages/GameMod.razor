@@ -1,0 +1,81 @@
+﻿@page "/gamemod"
+@page "/gamemod/{id:int}"
+@inject IGameService GameService
+
+
+@if(ID == null)
+{
+    <PageTitle>Create New Game</PageTitle>
+    <h3 style ="color:white">Create New Game</h3>
+}
+else
+{
+    <PageTitle>Edit Game @game.GameID</PageTitle>
+    <h3 style="color:white">Edit Game @game.GameID</h3>
+}
+
+<EditForm Model="game" OnSubmit="HandleSubmit">
+    <div>
+        <label style="color:white" for="gameid">Game ID</label>
+        <InputNumber id="gameid" @bind-Value="game.GameID" class="form-control"></InputNumber>
+        </div>
+        <div>
+        <label style="color:white" for="date">Date</label>
+        <InputDate TValue="DateTime" id="date" @bind-Value="game.Date" class="form-control"></InputDate>
+    </div>
+    <div>
+        <label style="color:white" for="funds">Funds</label>
+        <InputNumber id="funds" @bind-Value="game.Funds" class="form-control"></InputNumber>
+    </div>
+        <div>
+        <label style="color:white" for="betamount">Bet Amount</label>
+        <InputNumber @bind-Value="game.BetAmount" class="form-control"></InputNumber>
+    </div>
+    <div>
+        <label style="color:white" for="win">Win</label>
+        <InputCheckbox id="win" @bind-Value="game.Win" class="form-control"></InputCheckbox>
+    </div>
+    <div>
+        <label style="color:white">Player</label><br />
+        <InputSelect @bind-Value="game.PlayerID" class="form-select">
+            @foreach(var player in GameService.Players)
+            {
+                <option value="@player.PlayerID">@player.Username</option>
+            }
+        </InputSelect>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">@btnText</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? ID { get; set; }
+
+    string btnText = string.Empty;
+
+    Game game = new Game { Player = new Player() };
+
+    protected override async Task OnInitializedAsync()
+    {
+        btnText = ID == null ? "Save New Game" : "Update Game";
+        await GameService.GetPlayers();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if(ID == null)
+        {
+
+        }
+        else
+        {
+            game = await GameService.GetSingleGame((int)ID);
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+        
+    }
+}
