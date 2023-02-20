@@ -37,7 +37,7 @@ else
                         @game.GameID
                     </td>
                     <td>
-                        @game.Player?.Username
+                        @game.PlayerID
                     </td>
                     <td>
                         @game.Date
@@ -66,6 +66,7 @@ else
             }
         </tbody>
     </table>
+    <button class="btn btn-primary" @onclick="CreateNewGame">Create New Game</button>
 }
 
 
@@ -78,6 +79,11 @@ else
     void ShowGame(int id)
     {
         NavigationManager.NavigateTo($"gamemod/{id}");
+    }
+
+    void CreateNewGame()
+    {
+        NavigationManager.NavigateTo("/gamemod");
     }
 
 }
