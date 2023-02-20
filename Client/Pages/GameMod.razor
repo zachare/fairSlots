@@ -15,10 +15,6 @@ else
 }
 
 <EditForm Model="game" OnSubmit="HandleSubmit">
-    <div>
-        <label style="color:white" for="gameid">Game ID</label>
-        <InputNumber id="gameid" @bind-Value="game.GameID" class="form-control"></InputNumber>
-        </div>
         <div>
         <label style="color:white" for="date">Date</label>
         <InputDate TValue="DateTime" id="date" @bind-Value="game.Date" class="form-control"></InputDate>
@@ -33,7 +29,7 @@ else
     </div>
     <div>
         <label style="color:white" for="win">Win</label>
-        <InputCheckbox id="win" @bind-Value="game.Win" class="form-control"></InputCheckbox>
+        <InputCheckbox id="win" @bind-Value="game.Win"></InputCheckbox>
     </div>
     <div>
         <label style="color:white">Player</label><br />
@@ -46,6 +42,7 @@ else
     </div>
     <br />
     <button type="submit" class="btn btn-primary">@btnText</button>
+    <button type="button" class="btn btn-danger" @onclick="DeleteGame">Delete Game</button>
 </EditForm>
 
 @code {
@@ -66,7 +63,8 @@ else
     {
         if(ID == null)
         {
-
+            game.Player = GameService.Players[0];
+            game.PlayerID = game.Player.PlayerID;
         }
         else
         {
@@ -76,6 +74,18 @@ else
 
     async Task HandleSubmit()
     {
-        
+        if(ID == null)
+        {
+            await GameService.CreateGame(game);
+        }
+        else
+        {
+            await GameService.UpdateGame(game);
+        }
+    }
+
+    async Task DeleteGame()
+    {
+        await GameService.DeleteGame(game.GameID);
     }
 }

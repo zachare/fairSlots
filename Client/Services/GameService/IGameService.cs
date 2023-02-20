@@ -7,5 +7,8 @@
         Task GetPlayers();
         Task GetGames();
         Task<Game> GetSingleGame(int id);
+        Task CreateGame(Game game);
+        Task UpdateGame(Game game);
+        Task DeleteGame(int id);
     }
 }
