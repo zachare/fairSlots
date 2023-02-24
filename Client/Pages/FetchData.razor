@@ -4,41 +4,44 @@
 @using fairSlots.Shared
 @attribute [Authorize]
 @inject HttpClient Http
-
+@using fairSlots.Server.Data
 <PageTitle>Game History</PageTitle>
 
-<h1>Game History</h1>
+<Animation AnimationSelected="@selectedAnimation">
+    <h1>Game History</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+    <p>This component demonstrates fetching data from the server.</p>
 
-@if (histories == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Game Number</th>
-                <th>Funds</th>
-                <th>Bet Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var history in histories)
-            {
+    @if (histories == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@history.Date.ToShortDateString()</td>
-                    <td>@history.GameNumber</td>
-                    <td>$@history.Funds</td>
-                    <td>$@history.BetAmount</td>
+                    <th>Date</th>
+                    <th>Game Number</th>
+                    <th>Funds</th>
+                    <th>Bet Amount</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var history in histories)
+                {
+                    <tr>
+                        <td>@history.Date.ToShortDateString()</td>
+                        <td>@history.GameNumber</td>
+                        <td>$@history.Funds</td>
+                        <td>$@history.BetAmount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</Animation>
+
 
 @code {
     private GameHistory[]? histories;
@@ -53,5 +56,11 @@ else
         {
             exception.Redirect();
         }
+    }
+    public string selectedAnimation = "";
+
+    protected override void OnInitialized()
+    {
+        selectedAnimation = Animations.slideDown;
     }
 }

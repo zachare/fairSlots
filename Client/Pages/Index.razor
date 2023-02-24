@@ -1,8 +1,19 @@
 ﻿@page "/"
-
+@using fairSlots.Server.Data
 <PageTitle>Home</PageTitle>
+<Animation AnimationSelected="@selectedAnimation">
+    <h1>Play Now!</h1>
 
-<h1>Play Now!</h1>
+    Game HERE
+</Animation>
 
-Game HERE
+@code{
+    private int currentCount = 0;
+    public string selectedAnimation = "";
 
+    protected override void OnInitialized()
+    {
+        // Change the transition here
+        selectedAnimation = Animations.slideDown;
+    }
+}

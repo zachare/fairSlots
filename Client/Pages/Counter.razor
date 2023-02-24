@@ -1,15 +1,22 @@
 ﻿@page "/counter"
-
+@using fairSlots.Server.Data
 <PageTitle>Counter</PageTitle>
+<Animation AnimationSelected="@selectedAnimation">
+    <h1>Counter</h1>
+    <p role="status">Current count: @currentCount</p>
+    <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+</Animation>
 
-<h1>Counter</h1>
-
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
     private int currentCount = 0;
+    public string selectedAnimation = "";
+
+    protected override void OnInitialized()
+    {
+        // Change the transition here
+        selectedAnimation = Animations.slideDown;
+    }
 
     private void IncrementCount()
     {
