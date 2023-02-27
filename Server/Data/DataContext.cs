@@ -1,4 +1,5 @@
-﻿namespace fairSlots.Server.Data
+﻿
+namespace fairSlots.Server.Data
 {
     public class DataContext : DbContext
     {
@@ -20,7 +21,6 @@
                     GameID = 1,
                     PlayerID = 1,
                     Date = DateTime.Now,
-                    Funds = 200.00m,
                     BetAmount = 20.00m,
                     Win = true
                 },
@@ -30,7 +30,6 @@
                 GameID = 2,
                 PlayerID = 2,
                 Date = DateTime.Now,
-                Funds = 5000.00m,
                 BetAmount = 50.00m,
                 Win = false
             }

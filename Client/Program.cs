@@ -1,6 +1,7 @@
 global using fairSlots.Client.Services.GameService;
 global using fairSlots.Shared;
 using fairSlots.Client;
+using fairSlots.Client.Services.PlayerService;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -25,6 +26,7 @@ namespace fairSlots.Client
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("fairSlots.ServerAPI"));
             builder.Services.AddScoped<IGameService, GameService>();
+            builder.Services.AddScoped<IPlayerService, PlayerService>();
 
             builder.Services.AddApiAuthorization();
 

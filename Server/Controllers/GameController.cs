@@ -65,7 +65,6 @@ namespace fairSlots.Server.Controllers
 
             dbGame.PlayerID = game.PlayerID;
             dbGame.Date = game.Date;
-            dbGame.Funds = game.Funds;
             dbGame.BetAmount = game.BetAmount;
             dbGame.Win = game.Win;
 

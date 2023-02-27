@@ -19,17 +19,13 @@ else
         <label style="color:white" for="date">Date</label>
         <InputDate TValue="DateTime" id="date" @bind-Value="game.Date" class="form-control"></InputDate>
     </div>
-    <div>
-        <label style="color:white" for="funds">Funds</label>
-        <InputNumber id="funds" @bind-Value="game.Funds" class="form-control"></InputNumber>
-    </div>
         <div>
         <label style="color:white" for="betamount">Bet Amount</label>
         <InputNumber @bind-Value="game.BetAmount" class="form-control"></InputNumber>
     </div>
     <div>
         <label style="color:white" for="win">Win</label>
-        <InputCheckbox id="win" @bind-Value="game.Win"></InputCheckbox>
+        <InputCheckbox id="win" @bind-Value="game.Win" class="form-control"></InputCheckbox>
     </div>
     <div>
         <label style="color:white">Player</label><br />

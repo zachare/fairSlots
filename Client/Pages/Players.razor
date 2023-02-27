@@ -1,0 +1,63 @@
+﻿@page "/players"
+@inject IPlayerService PlayerService
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization;
+
+<PageTitle>Player List</PageTitle>
+<h2 style="color:white">Player List</h2>
+
+    <table class="table">
+        <thead>
+            <tr style="color:white">
+                <th>Player ID</th>
+                <th>Username</th>
+                <th>Funds</th>
+                <th>Win Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in PlayerService.Players)
+            {
+            <tr style="color:white">
+                    <td>
+                        @p.PlayerID
+                    </td>
+                    <td>
+                        @p.Username
+                    </td>
+                    <td>
+                        @p.Funds
+                    </td>
+                    <td>
+                        @p.WinRate
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="(() => ShowPlayer(p.PlayerID))"><i class="oi oi-pencil"></i></button> |
+                    </td>
+                </tr>
+            
+            }
+        </tbody>
+
+    </table>
+    <button class="btn btn-primary" @onclick="CreateNewPlayer">Create New Player</button>
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await PlayerService.GetPlayers();
+    }
+
+    void ShowPlayer(int id)
+    {
+        NavigationManager.NavigateTo($"player/{id}");
+    }
+
+    void CreateNewPlayer()
+    {
+        NavigationManager.NavigateTo("/player");
+    }
+}

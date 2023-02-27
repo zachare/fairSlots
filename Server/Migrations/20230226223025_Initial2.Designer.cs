@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fairSlots.Server.Data;
 
@@ -11,9 +12,11 @@ using fairSlots.Server.Data;
 namespace fairSlots.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230226223025_Initial2")]
+    partial class Initial2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +56,7 @@ namespace fairSlots.Server.Migrations
                         {
                             GameID = 1,
                             BetAmount = 20.00m,
-                            Date = new DateTime(2023, 2, 26, 22, 53, 41, 366, DateTimeKind.Local).AddTicks(9223),
+                            Date = new DateTime(2023, 2, 26, 14, 30, 25, 70, DateTimeKind.Local).AddTicks(1212),
                             PlayerID = 1,
                             Win = true
                         },
@@ -61,7 +64,7 @@ namespace fairSlots.Server.Migrations
                         {
                             GameID = 2,
                             BetAmount = 50.00m,
-                            Date = new DateTime(2023, 2, 26, 22, 53, 41, 366, DateTimeKind.Local).AddTicks(9337),
+                            Date = new DateTime(2023, 2, 26, 14, 30, 25, 70, DateTimeKind.Local).AddTicks(1374),
                             PlayerID = 2,
                             Win = false
                         });
