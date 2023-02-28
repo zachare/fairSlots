@@ -1,0 +1,32 @@
+﻿<!--Resources Used & References:
+  https://michalsnik.github.io/aos/
+  https://github.com/michalsnik/aos
+-->
+
+<div data-aos="@animationName" data-aos-delay="@delayTime" data-aos-duration="@timeSpan">
+    @ChildContent
+</div>
+
+@code {
+    private string animationName = "";
+    private string delayTime = "";
+    private string timeSpan = "";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string AnimationSelected { get; set; } = string.Empty;
+
+
+    protected override void OnParametersSet()
+    {
+        delayTime = "30";
+        timeSpan = "4000";
+        
+        if (AnimationSelected != null && AnimationSelected != "")
+        {
+            animationName = AnimationSelected;
+        }
+    }
+}
