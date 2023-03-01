@@ -30,8 +30,10 @@ namespace fairSlots
             builder.Services.AddAuthentication()
                 .AddIdentityServerJwt();
 
+            builder.Services.AddControllers();
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+
 
             var app = builder.Build();
 

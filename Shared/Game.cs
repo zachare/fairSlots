@@ -8,7 +8,6 @@ namespace fairSlots.Shared
         public int PlayerID { get; set; }
         public Player? Player { get; set; }
         public DateTime Date { get; set; }
-        public decimal Funds { get; set; }
         public decimal BetAmount { get; set; }
         public bool Win { get; set; }
 

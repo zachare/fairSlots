@@ -1,0 +1,76 @@
+﻿@page "/player"
+@page "/player/{id:int}"
+@inject IPlayerService PlayerService
+
+@if (ID == null)
+{
+    <PageTitle>Create Player</PageTitle>
+    <h2 style="color:white">Create A New Player</h2>
+}
+else
+{
+    <PageTitle>Edit @player.Username</PageTitle>
+    <h3>Edit @player.Username</h3>
+}
+
+<EditForm Model="player" OnSubmit="HandleSubmit">
+    <div>
+        <label style="color:white" for="username">Username</label>
+        <InputText id="username" @bind-Value="player.Username" class="form-control"></InputText>
+    </div>
+    <div>
+        <label style="color:white" for="funds">Funds</label>
+        <InputNumber id="funds" @bind-Value="player.Funds" class="form-control"></InputNumber>
+    </div>
+    <div>
+        <label style="color:white" for="winrate">Win Rate</label>
+        <InputNumber id="winrate" @bind-Value="player.WinRate" class="form-control"></InputNumber>
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary">@btnText</button>
+    <button type="button" class="btn btn-danger" @onclick="DeletePlayer">Delete Player</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? ID { get; set; }
+
+    string btnText = string.Empty;
+
+    Player player = new Player();
+
+    protected override async Task OnInitializedAsync()
+    {
+        btnText = ID == null ? "Save New Player" : "Update Player";
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (ID == null)
+        {
+
+        }
+        else
+        {
+            player = await PlayerService.GetSinglePlayer((int)ID);
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+        if (ID == null)
+        {
+            await PlayerService.CreatePlayer(player);
+        }
+        else
+        {
+            await PlayerService.UpdatePlayer(player);
+        }
+    }
+
+    async Task DeletePlayer()
+    {
+        await PlayerService.DeletePlayer(player.PlayerID);
+    }
+}
+}
