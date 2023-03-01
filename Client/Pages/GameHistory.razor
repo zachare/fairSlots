@@ -5,13 +5,14 @@
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization;
 @using fairSlots.Shared
-
+@using fairSlots.Server.Data
 
 <PageTitle>Game History</PageTitle>
 
-<h1 style="color:white">Game History</h1>
+<Animation AnimationSelected="@selectedAnimation">
+    <h1 style="color:white">Game History</h1>
 
-string BetString = "";
+    string BetString = "";
 
 @if (GameService.Games == null)
 {
@@ -32,14 +33,42 @@ else
             @foreach (var game in GameService.Games)
             {
                 <tr style="color:white">
-                    <td>
-                        @game.GameID
-                    </td>
-                    <td>
-                        @game.PlayerID
-                    </td>
-                    <td>
-                        @game.Date
+                    <th>Game ID</th>
+                    <th>Player</th>
+                    <th>Date</th>
+                    <th>Funds</th>
+                    <th>Bet Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var game in GameService.Games)
+                {
+                    <tr style="color:white">
+                        <td>
+                            @game.GameID
+                        </td>
+                        <td>
+                            @game.PlayerID
+                        </td>
+                        <td>
+                            @game.Date
+                        </td>
+                        <td>
+                            $@game.Funds
+                        </td>
+                        <td>
+                            @if (game.Win == true)
+                            {
+                        <tr style="color:limegreen">
+                            +$@game.BetAmount
+                        </tr>
+                            }
+                            else
+                            {
+                        <tr style="color:red">
+                            -$@game.BetAmount
+                        </tr>
+                            }
                     </td>
                     <td>
                         @if (game.Win == true)
@@ -64,7 +93,7 @@ else
     </table>
     <button class="btn btn-primary" @onclick="CreateNewGame">Create New Game</button>
 }
-
+</Animation>
 
 @code {
     protected override async Task OnInitializedAsync()
@@ -80,6 +109,12 @@ else
     void CreateNewGame()
     {
         NavigationManager.NavigateTo("/gamemod");
+    }
+
+    public string selectedAnimation = "";
+    protected override void OnInitialized()
+    {
+        selectedAnimation = Animations.slideDown;
     }
 
 }

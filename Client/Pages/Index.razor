@@ -1,8 +1,18 @@
 ﻿@page "/"
-
+@using fairSlots.Server.Data
 <PageTitle>Home</PageTitle>
+<Animation AnimationSelected="@selectedAnimation">
+    <h1 style="color:white;">Play Now!</h1>
 
-<h1 style="color:white;">Play Now!</h1>
+    <h7 style="color:white;">Game HERE</h7>
+</Animation>
 
-<h7 style="color:white;">Game HERE</h7>
+@code{
+    public string selectedAnimation = "";
+
+    protected override void OnInitialized()
+    {
+        selectedAnimation = Animations.slideDown;
+    }
+}
 
