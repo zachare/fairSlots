@@ -12,8 +12,8 @@ using fairSlots.Server.Data;
 namespace fairSlots.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230226223025_Initial2")]
-    partial class Initial2
+    [Migration("20230301005544_InitialData")]
+    partial class InitialData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,7 +56,7 @@ namespace fairSlots.Server.Migrations
                         {
                             GameID = 1,
                             BetAmount = 20.00m,
-                            Date = new DateTime(2023, 2, 26, 14, 30, 25, 70, DateTimeKind.Local).AddTicks(1212),
+                            Date = new DateTime(2023, 2, 28, 16, 55, 43, 976, DateTimeKind.Local).AddTicks(9048),
                             PlayerID = 1,
                             Win = true
                         },
@@ -64,7 +64,7 @@ namespace fairSlots.Server.Migrations
                         {
                             GameID = 2,
                             BetAmount = 50.00m,
-                            Date = new DateTime(2023, 2, 26, 14, 30, 25, 70, DateTimeKind.Local).AddTicks(1374),
+                            Date = new DateTime(2023, 2, 28, 16, 55, 43, 976, DateTimeKind.Local).AddTicks(9137),
                             PlayerID = 2,
                             Win = false
                         });

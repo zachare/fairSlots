@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fairSlots.Server.Data;
 
@@ -11,9 +12,11 @@ using fairSlots.Server.Data;
 namespace fairSlots.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230301003738_Initial2")]
+    partial class Initial2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,6 +39,9 @@ namespace fairSlots.Server.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("Funds")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("PlayerID")
                         .HasColumnType("int");
 
@@ -53,7 +59,8 @@ namespace fairSlots.Server.Migrations
                         {
                             GameID = 1,
                             BetAmount = 20.00m,
-                            Date = new DateTime(2023, 2, 28, 16, 55, 43, 976, DateTimeKind.Local).AddTicks(9048),
+                            Date = new DateTime(2023, 2, 28, 16, 37, 38, 138, DateTimeKind.Local).AddTicks(9043),
+                            Funds = 200.00m,
                             PlayerID = 1,
                             Win = true
                         },
@@ -61,7 +68,8 @@ namespace fairSlots.Server.Migrations
                         {
                             GameID = 2,
                             BetAmount = 50.00m,
-                            Date = new DateTime(2023, 2, 28, 16, 55, 43, 976, DateTimeKind.Local).AddTicks(9137),
+                            Date = new DateTime(2023, 2, 28, 16, 37, 38, 138, DateTimeKind.Local).AddTicks(9139),
+                            Funds = 5000.00m,
                             PlayerID = 2,
                             Win = false
                         });

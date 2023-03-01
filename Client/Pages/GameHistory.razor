@@ -7,12 +7,12 @@
 @using fairSlots.Shared
 @using fairSlots.Server.Data
 
+<Animation AnimationSelected="@selectedAnimation">
 <PageTitle>Game History</PageTitle>
 
-<Animation AnimationSelected="@selectedAnimation">
-    <h1 style="color:white">Game History</h1>
+<h1 style="color:white">Game History</h1>
 
-    string BetString = "";
+string BetString = "";
 
 @if (GameService.Games == null)
 {
@@ -33,42 +33,14 @@ else
             @foreach (var game in GameService.Games)
             {
                 <tr style="color:white">
-                    <th>Game ID</th>
-                    <th>Player</th>
-                    <th>Date</th>
-                    <th>Funds</th>
-                    <th>Bet Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var game in GameService.Games)
-                {
-                    <tr style="color:white">
-                        <td>
-                            @game.GameID
-                        </td>
-                        <td>
-                            @game.PlayerID
-                        </td>
-                        <td>
-                            @game.Date
-                        </td>
-                        <td>
-                            $@game.Funds
-                        </td>
-                        <td>
-                            @if (game.Win == true)
-                            {
-                        <tr style="color:limegreen">
-                            +$@game.BetAmount
-                        </tr>
-                            }
-                            else
-                            {
-                        <tr style="color:red">
-                            -$@game.BetAmount
-                        </tr>
-                            }
+                    <td>
+                        @game.GameID
+                    </td>
+                    <td>
+                        @game.PlayerID
+                    </td>
+                    <td>
+                        @game.Date
                     </td>
                     <td>
                         @if (game.Win == true)
@@ -83,11 +55,11 @@ else
                         -$@game.BetAmount
                     </tr>
                         }
-                    </td>
-                    <td>
-                        <button class="btn btn-primary" @onclick="(() => ShowGame(game.GameID))"><i class="oi oi-pencil"></i></button>
-                    </td>
-               </tr>
+                </td>
+            <td>
+                <button class="btn btn-primary" @onclick="(() => ShowGame(game.GameID))"><i class="oi oi-pencil"></i></button>
+            </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -96,8 +68,10 @@ else
 </Animation>
 
 @code {
+    public string selectedAnimation = "";
     protected override async Task OnInitializedAsync()
     {
+        selectedAnimation = Animations.slideDown;
         await GameService.GetGames();
     }
 
@@ -109,12 +83,6 @@ else
     void CreateNewGame()
     {
         NavigationManager.NavigateTo("/gamemod");
-    }
-
-    public string selectedAnimation = "";
-    protected override void OnInitialized()
-    {
-        selectedAnimation = Animations.slideDown;
     }
 
 }
