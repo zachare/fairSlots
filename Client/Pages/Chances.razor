@@ -1,0 +1,74 @@
+﻿@page "/chances"
+@inject IChanceService ChanceService
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization;
+@using fairSlots.Shared
+
+<Animation AnimationSelected="@selectedAnimation">
+<PageTitle>Chances</PageTitle>
+
+<h1 style="color:white">Chances</h1>
+
+@if (ChanceService.Chances == null)
+{
+    <p style="color:white"><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr style="color:white">
+                <th>Chance ID</th>
+                <th>Player ID</th>
+                <th>Update Time</th>
+                <th>Win Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var chance in ChanceService.Chances)
+            {
+                <tr style="color:white">
+                    <td>
+                        @chance.ChanceID
+                    </td>
+                    <td>
+                        @chance.PlayerID
+                    </td>
+                    <td>
+                        @chance.UpdateTime
+                    </td>
+                    <td>
+                        @chance.WinRate
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="(() => ShowChance(chance.ChanceID))"><i class="oi oi-pencil"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button class="btn btn-primary" @onclick="CreateNewChance">Create New Chance</button>
+}
+</Animation>
+
+@code {
+    public string selectedAnimation = "";
+    protected override async Task OnInitializedAsync()
+    {
+        selectedAnimation = Animations.slideDown;
+        await ChanceService.GetChances();
+    }
+
+    void ShowChance(int id)
+    {
+        NavigationManager.NavigateTo($"chance/{id}");
+    }
+
+    void CreateNewChance()
+    {
+        NavigationManager.NavigateTo("/chance");
+    }
+
+}

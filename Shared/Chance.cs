@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 
 namespace fairSlots.Shared
 {
-    public class Player
+    public class Chance
     {
         [Required]
+        public int ChanceID { get; set; }
+        [Required]
         public int PlayerID { get; set; }
+        public Player? Player { get; set; }
         [Required]
-        [StringLength(16, ErrorMessage = "Username is too long (16 character limit).")]
-        public string? Username { get; set; }
-        [Required]
-        public decimal Funds { get; set; }
+        public DateTime UpdateTime { get; set; }
         [Required]
         public decimal WinRate { get; set; }
-
     }
 }

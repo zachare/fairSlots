@@ -5,14 +5,12 @@
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization;
 @using fairSlots.Shared
-@using fairSlots.Server.Data
 
 <Animation AnimationSelected="@selectedAnimation">
 <PageTitle>Game History</PageTitle>
 
 <h1 style="color:white">Game History</h1>
 
-string BetString = "";
 
 @if (GameService.Games == null)
 {

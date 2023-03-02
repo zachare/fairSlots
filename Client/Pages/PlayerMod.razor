@@ -2,21 +2,24 @@
 @page "/player/{id:int}"
 @inject IPlayerService PlayerService
 
+<Animation AnimationSelected="@selectedAnimation">
 @if (ID == null)
 {
     <PageTitle>Create Player</PageTitle>
-    <h2 style="color:white">Create A New Player</h2>
+    <h1 style="color:white">Create A New Player</h1>
 }
 else
 {
     <PageTitle>Edit @player.Username</PageTitle>
-    <h3>Edit @player.Username</h3>
+    <h3 style="color:white">Edit @player.Username</h3>
 }
 
-<EditForm Model="player" OnSubmit="HandleSubmit">
+<EditForm Model="player" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator/>
     <div>
         <label style="color:white" for="username">Username</label>
         <InputText id="username" @bind-Value="player.Username" class="form-control"></InputText>
+        <ValidationMessage For="() => player.Username"/>
     </div>
     <div>
         <label style="color:white" for="funds">Funds</label>
@@ -27,13 +30,23 @@ else
         <InputNumber id="winrate" @bind-Value="player.WinRate" class="form-control"></InputNumber>
     </div>
     <br/>
-    <button type="submit" class="btn btn-primary">@btnText</button>
-    <button type="button" class="btn btn-danger" @onclick="DeletePlayer">Delete Player</button>
+    @if (ID != null)
+    {
+        <button type="submit" class="btn btn-primary">@btnText</button>
+        <button type="button" class="btn btn-danger" @onclick="DeletePlayer">Delete Player</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-primary">@btnText</button>
+    }
 </EditForm>
+</Animation>
 
 @code {
     [Parameter]
     public int? ID { get; set; }
+
+    public string selectedAnimation = "";
 
     string btnText = string.Empty;
 
@@ -41,6 +54,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        selectedAnimation = Animations.slideDown;
         btnText = ID == null ? "Save New Player" : "Update Player";
     }
 

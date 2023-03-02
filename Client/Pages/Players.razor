@@ -5,6 +5,7 @@
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization;
 
+<Animation AnimationSelected="@selectedAnimation">
 <PageTitle>Player List</PageTitle>
 <h2 style="color:white">Player List</h2>
 
@@ -43,11 +44,16 @@
 
     </table>
     <button class="btn btn-primary" @onclick="CreateNewPlayer">Create New Player</button>
+    </Animation>
 
 
 @code {
+
+    public string selectedAnimation = "";
+
     protected override async Task OnInitializedAsync()
     {
+        selectedAnimation = Animations.slideDown;
         await PlayerService.GetPlayers();
     }
 

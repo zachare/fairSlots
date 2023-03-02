@@ -14,7 +14,7 @@ else
     <h3 style="color:white">Edit Game @game.GameID</h3>
 }
 
-<EditForm Model="game" OnSubmit="HandleSubmit">
+<EditForm Model="game" OnValidSubmit="HandleSubmit">
         <div>
         <label style="color:white" for="date">Date</label>
         <InputDate TValue="DateTime" id="date" @bind-Value="game.Date" class="form-control"></InputDate>
@@ -25,7 +25,7 @@ else
     </div>
     <div>
         <label style="color:white" for="win">Win</label>
-        <InputCheckbox id="win" @bind-Value="game.Win" class="form-control"></InputCheckbox>
+        <InputCheckbox id="win" @bind-Value="game.Win"></InputCheckbox>
     </div>
     <div>
         <label style="color:white">Player</label><br />
@@ -37,8 +37,15 @@ else
         </InputSelect>
     </div>
     <br />
-    <button type="submit" class="btn btn-primary">@btnText</button>
-    <button type="button" class="btn btn-danger" @onclick="DeleteGame">Delete Game</button>
+    @if(ID != null)
+    {
+        <button type="submit" class="btn btn-primary">@btnText</button>
+        <button type="button" class="btn btn-danger" @onclick="DeleteGame">Delete Game</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-primary">@btnText</button>
+    }
 </EditForm>
 
 @code {

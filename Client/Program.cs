@@ -1,7 +1,8 @@
-global using fairSlots.Client.Services.GameService;
 global using fairSlots.Shared;
+global using fairSlots.Client.Services.GameService;
+global using fairSlots.Client.Services.PlayerService;
+global using fairSlots.Client.Services.ChanceService;
 using fairSlots.Client;
-using fairSlots.Client.Services.PlayerService;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -27,6 +28,8 @@ namespace fairSlots.Client
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("fairSlots.ServerAPI"));
             builder.Services.AddScoped<IGameService, GameService>();
             builder.Services.AddScoped<IPlayerService, PlayerService>();
+            builder.Services.AddScoped<IChanceService, ChanceService>();
+
 
             builder.Services.AddApiAuthorization();
 

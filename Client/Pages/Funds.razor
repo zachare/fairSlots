@@ -3,6 +3,7 @@
 @inject IPlayerService PlayerService
 @using fairSlots.Shared
 
+<Animation AnimationSelected="@selectedAnimation">
 <PageTitle>Add Funds</PageTitle>
 <h2 style="color:white">Add Funds</h2>
 <EditForm Model="fund" OnSubmit="HandleSubmit">
@@ -24,17 +25,23 @@
         <InputText id="username" @bind-Value="fund.Username" class="form-control"></InputText>
     </div>
     <br/>
-    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="submit" class="btn btn-primary">Add $100</button>
 </EditForm>
+</Animation>
 
 @code {
 
+    public string selectedAnimation = "";
     Player fund = new Player();
 
     protected override async Task OnInitializedAsync()
     {
+        fund = PlayerService.Players[0];
+        fund.PlayerID = fund.PlayerID;
+        selectedAnimation = Animations.slideDown;
         await PlayerService.GetPlayers();
     }
+
 
     async Task HandleSubmit()
     {

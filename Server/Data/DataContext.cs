@@ -34,11 +34,31 @@ namespace fairSlots.Server.Data
                 Win = false
             }
             );
+
+            modelBuilder.Entity<Chance>().HasData(
+                new Chance
+                {
+                    ChanceID = 1,
+                    PlayerID = 1,
+                    UpdateTime = DateTime.Now,
+                    WinRate = 0.30m
+                },
+                new Chance
+                {
+                    ChanceID = 2,
+                    PlayerID = 3,
+                    UpdateTime = DateTime.Now,
+                    WinRate = 0.27m
+                }
+                );
+
+
         }
 
         public DbSet<Game> Games { get; set; }
 
         public DbSet<Player> Players { get; set; }
+        public DbSet<Chance> Chances { get; set; }
     }
 
 }

@@ -1,0 +1,90 @@
+﻿@page "/chance"
+@page "/chance/{id:int}"
+@inject IChanceService ChanceService
+
+
+@if(ID == null)
+{
+    <PageTitle>Create New Chance</PageTitle>
+    <h3 style ="color:white">Create New Chance</h3>
+}
+else
+{
+    <PageTitle>Edit Chance @chance.ChanceID</PageTitle>
+    <h3 style="color:white">Edit Chance @chance.ChanceID</h3>
+}
+
+<EditForm Model="chance" OnValidSubmit="HandleSubmit">
+        <div>
+            <label style="color:white">Player</label><br />
+            <InputSelect @bind-Value="chance.PlayerID" class="form-select">
+                @foreach(var player in ChanceService.Players)
+                {
+                    <option value="@player.PlayerID">@player.Username</option>
+                }
+            </InputSelect>
+        </div>
+        <div>
+        <label style="color:white" for="updatetime">Update Time</label>
+        <InputDate TValue="DateTime" id="date" @bind-Value="chance.UpdateTime" class="form-control"></InputDate>
+        </div>
+        <div>
+        <label style="color:white" for="winrate">Win Rate</label>
+        <InputNumber @bind-Value="chance.WinRate" class="form-control"></InputNumber>
+        </div>
+    <br />
+    @if(ID != null)
+    {
+        <button type="submit" class="btn btn-primary">@btnText</button>
+        <button type="button" class="btn btn-danger" @onclick="DeleteChance">Delete Chance</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-primary">@btnText</button>
+    }
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? ID { get; set; }
+
+    string btnText = string.Empty;
+
+    Chance chance = new Chance { Player = new Player(), UpdateTime = DateTime.Now };
+
+    protected override async Task OnInitializedAsync()
+    {
+        btnText = ID == null ? "Save New Chance" : "Update Chance";
+        await ChanceService.GetPlayers();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if(ID == null)
+        {
+            chance.Player = ChanceService.Players[0];
+            chance.PlayerID = chance.Player.PlayerID;
+        }
+        else
+        {
+            chance = await ChanceService.GetSingleChance((int)ID);
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+        if(ID == null)
+        {
+            await ChanceService.CreateChance(chance);
+        }
+        else
+        {
+            await ChanceService.UpdateChance(chance);
+        }
+    }
+
+    async Task DeleteChance()
+    {
+        await ChanceService.DeleteChance(chance.ChanceID);
+    }
+}
