@@ -1,4 +1,4 @@
-﻿
+﻿// Seperate DbContext for Game related data
 namespace fairSlots.Server.Data
 {
     public class DataContext : DbContext
@@ -8,11 +8,12 @@ namespace fairSlots.Server.Data
 
         }
 
+        // Seeds Players, Games, and Chances tables
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>().HasData(
-            new Player { PlayerID = 1, Username = "Zach", Funds = 200.00m, WinRate = 0.50m },
-            new Player { PlayerID = 2, Username = "Admin", Funds = 5000.00m, WinRate = 0.99m }
+            new Player { PlayerID = 1, Username = "Zach", Funds = 200.00m },
+            new Player { PlayerID = 2, Username = "Admin", Funds = 5000.00m }
             );
 
             modelBuilder.Entity<Game>().HasData(
@@ -38,14 +39,12 @@ namespace fairSlots.Server.Data
             modelBuilder.Entity<Chance>().HasData(
                 new Chance
                 {
-                    ChanceID = 1,
                     PlayerID = 1,
                     UpdateTime = DateTime.Now,
                     WinRate = 0.30m
                 },
                 new Chance
                 {
-                    ChanceID = 2,
                     PlayerID = 3,
                     UpdateTime = DateTime.Now,
                     WinRate = 0.27m

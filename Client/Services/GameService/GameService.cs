@@ -6,6 +6,8 @@ using System.Net.Http.Json;
 
 namespace fairSlots.Client.Services.GameService
 {
+    // Provides a service that handles client-side Game HTTP operations
+    // To be injected into client-side pages
     public class GameService : IGameService
     {
         private readonly HttpClient _http;

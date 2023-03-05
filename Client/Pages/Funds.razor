@@ -1,32 +1,38 @@
-﻿@page "/funds"
+﻿@* A page to add funds to a Player's account (currently only $100 per click)*@
+@page "/funds"
 @inject HttpClient _httpClient
 @inject IPlayerService PlayerService
+@* To be accessed only by Admin and Manager roles*@
+@attribute [Authorize(Roles = "Admin, Manager")]
+@using Microsoft.AspNetCore.Authorization;
 @using fairSlots.Shared
 
 <Animation AnimationSelected="@selectedAnimation">
-<PageTitle>Add Funds</PageTitle>
-<h2 style="color:white">Add Funds</h2>
-<EditForm Model="fund" OnSubmit="HandleSubmit">
-    <div>
-        <label style="color:white">Player</label><br />
-        <InputSelect @bind-Value="fund.PlayerID" class="form-select">
-            @foreach (var player in PlayerService.Players)
-            {
-                <option value="@player.PlayerID">@player.Username</option>
-            }
-        </InputSelect>
-    </div>
-    <div class="visually-hidden">
-        <label style="color:white" for="funds">Funds</label>
-        <InputNumber id="funds" @bind-Value="fund.Funds" class="form-control"></InputNumber>
-        <label style="color:white" for="winrate">Win Rate</label>
-        <InputNumber id="winrate" @bind-Value="fund.WinRate" class="form-control"></InputNumber>
-        <label style="color:white" for="username">Username</label>
-        <InputText id="username" @bind-Value="fund.Username" class="form-control"></InputText>
-    </div>
-    <br/>
-    <button type="submit" class="btn btn-primary">Add $100</button>
-</EditForm>
+    <PageTitle>Add Funds</PageTitle>
+    <h2 style="color:white">Add Funds</h2>
+
+    <EditForm Model="fund" OnSubmit="HandleSubmit">
+        <div>
+            <label style="color:white">Player</label><br />
+            @* Displays a dropdown of all players and selects one to apply $100 to*@
+            <InputSelect @bind-Value="fund.PlayerID" class="form-select">
+                @foreach (var player in PlayerService.Players)
+                {
+                    <option value="@player.PlayerID">@player.Username</option>
+                }
+            </InputSelect>
+        </div>
+        @* Provides Player's other properties as hidden as they are not meant to be edited from this page *@
+        @* Allows the update to pass in all properties *@
+        <div class="visually-hidden">
+            <label style="color:white" for="funds">Funds</label>
+            <InputNumber id="funds" @bind-Value="fund.Funds" class="form-control"></InputNumber>
+            <label style="color:white" for="username">Username</label>
+            <InputText id="username" @bind-Value="fund.Username" class="form-control"></InputText>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Add $100</button>
+    </EditForm>
 </Animation>
 
 @code {
@@ -37,7 +43,6 @@
     protected override async Task OnInitializedAsync()
     {
         fund = PlayerService.Players[0];
-        fund.PlayerID = fund.PlayerID;
         selectedAnimation = Animations.slideDown;
         await PlayerService.GetPlayers();
     }
@@ -45,7 +50,9 @@
 
     async Task HandleSubmit()
     {
+        // Upon submit, the Player object is selected based on the ID correlated with the Username selected in the form
         fund = PlayerService.Players.Single(p => p.PlayerID == fund.PlayerID);
+        // This Player's Funds property is incremented by 100 and the Player object is updated
         fund.Funds = fund.Funds + 100;
         await PlayerService.UpdatePlayer(fund);
     }

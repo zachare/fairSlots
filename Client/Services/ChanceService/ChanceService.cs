@@ -6,6 +6,8 @@ using System.Net.Http.Json;
 
 namespace fairSlots.Client.Services.ChanceService
 {
+    // Provides a service that handles client-side Chance HTTP operations
+    // To be injected into client-side pages
     public class ChanceService : IChanceService
     {
         private readonly HttpClient _http;
@@ -63,7 +65,7 @@ namespace fairSlots.Client.Services.ChanceService
 
         public async Task UpdateChance(Chance chance)
         {
-            var result = await _http.PutAsJsonAsync($"api/chance/{chance.ChanceID}", chance);
+            var result = await _http.PutAsJsonAsync($"api/chance/{chance.PlayerID}", chance);
             await SetChances(result);
         }
     }

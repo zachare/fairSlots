@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace fairSlots.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Initial3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,13 +19,32 @@ namespace fairSlots.Server.Migrations
                 {
                     PlayerID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Funds = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    WinRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Username = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
+                    Funds = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.PlayerID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Chances",
+                columns: table => new
+                {
+                    PlayerID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlayerID1 = table.Column<int>(type: "int", nullable: true),
+                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    WinRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chances", x => x.PlayerID);
+                    table.ForeignKey(
+                        name: "FK_Chances_Players_PlayerID1",
+                        column: x => x.PlayerID1,
+                        principalTable: "Players",
+                        principalColumn: "PlayerID");
                 });
 
             migrationBuilder.CreateTable(
@@ -36,7 +55,6 @@ namespace fairSlots.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PlayerID = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Funds = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     BetAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Win = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -52,22 +70,36 @@ namespace fairSlots.Server.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Players",
-                columns: new[] { "PlayerID", "Funds", "Username", "WinRate" },
+                table: "Chances",
+                columns: new[] { "PlayerID", "PlayerID1", "UpdateTime", "WinRate" },
                 values: new object[,]
                 {
-                    { 1, 200.00m, "Zach", 0.50m },
-                    { 2, 5000.00m, "Admin", 0.99m }
+                    { 1, null, new DateTime(2023, 3, 3, 18, 34, 17, 830, DateTimeKind.Local).AddTicks(522), 0.30m },
+                    { 3, null, new DateTime(2023, 3, 3, 18, 34, 17, 830, DateTimeKind.Local).AddTicks(525), 0.27m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Players",
+                columns: new[] { "PlayerID", "Funds", "Username" },
+                values: new object[,]
+                {
+                    { 1, 200.00m, "Zach" },
+                    { 2, 5000.00m, "Admin" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Games",
-                columns: new[] { "GameID", "BetAmount", "Date", "Funds", "PlayerID", "Win" },
+                columns: new[] { "GameID", "BetAmount", "Date", "PlayerID", "Win" },
                 values: new object[,]
                 {
-                    { 1, 20.00m, new DateTime(2023, 2, 18, 22, 58, 7, 80, DateTimeKind.Local).AddTicks(2987), 200.00m, 1, true },
-                    { 2, 50.00m, new DateTime(2023, 2, 18, 22, 58, 7, 80, DateTimeKind.Local).AddTicks(3052), 5000.00m, 2, false }
+                    { 1, 20.00m, new DateTime(2023, 3, 3, 18, 34, 17, 830, DateTimeKind.Local).AddTicks(329), 1, true },
+                    { 2, 50.00m, new DateTime(2023, 3, 3, 18, 34, 17, 830, DateTimeKind.Local).AddTicks(484), 2, false }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chances_PlayerID1",
+                table: "Chances",
+                column: "PlayerID1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Games_PlayerID",
@@ -78,6 +110,9 @@ namespace fairSlots.Server.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Chances");
+
             migrationBuilder.DropTable(
                 name: "Games");
 

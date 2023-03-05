@@ -1,5 +1,6 @@
 ﻿namespace fairSlots.Client.Services.GameService
 {
+    // Initializes the IGameService interface to be inherited by GameService
     public interface IGameService
     {
         List<Game> Games { get; set; }

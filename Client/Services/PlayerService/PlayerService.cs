@@ -4,6 +4,8 @@ using System.Numerics;
 
 namespace fairSlots.Client.Services.PlayerService
 {
+    // Provides a service that handles client-side Player HTTP operations
+    // To be injected into client-side pages
     public class PlayerService : IPlayerService
     {
         private readonly HttpClient _http;

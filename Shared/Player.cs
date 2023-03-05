@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+// Model for the Player class, it has a one-to-many relationship with Game and a
+// one-to-one relationship with Chance
 
 namespace fairSlots.Shared
 {
@@ -16,8 +18,7 @@ namespace fairSlots.Shared
         public string? Username { get; set; }
         [Required]
         public decimal Funds { get; set; }
-        [Required]
-        public decimal WinRate { get; set; }
+
 
     }
 }

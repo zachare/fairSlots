@@ -1,6 +1,11 @@
-﻿@page "/player"
+﻿@* Page for the creation or modification of a Player object, passes in ID via URL if given *@
+@page "/player"
 @page "/player/{id:int}"
 @inject IPlayerService PlayerService
+@inject IChanceService ChanceService
+@* Only to be accessed by Manager and Admin roles *@
+@attribute [Authorize(Roles = "Manager, Admin")]
+@using Microsoft.AspNetCore.Authorization;
 
 <Animation AnimationSelected="@selectedAnimation">
 @if (ID == null)
@@ -19,15 +24,12 @@ else
     <div>
         <label style="color:white" for="username">Username</label>
         <InputText id="username" @bind-Value="player.Username" class="form-control"></InputText>
+        @* Provides an error message is the Username is not valid*@
         <ValidationMessage For="() => player.Username"/>
     </div>
     <div>
         <label style="color:white" for="funds">Funds</label>
         <InputNumber id="funds" @bind-Value="player.Funds" class="form-control"></InputNumber>
-    </div>
-    <div>
-        <label style="color:white" for="winrate">Win Rate</label>
-        <InputNumber id="winrate" @bind-Value="player.WinRate" class="form-control"></InputNumber>
     </div>
     <br/>
     @if (ID != null)
@@ -51,6 +53,7 @@ else
     string btnText = string.Empty;
 
     Player player = new Player();
+    Chance chance = new Chance();
 
     protected override async Task OnInitializedAsync()
     {
@@ -72,8 +75,14 @@ else
 
     async Task HandleSubmit()
     {
+        // In the case that a new Player is created, a corresponding Chance object is also created
+        // Uses default WinRate of 0.50 and current time as UpdateTime
         if (ID == null)
         {
+            chance.PlayerID = player.PlayerID;
+            chance.WinRate = 0.50m;
+            chance.UpdateTime = DateTime.Now;
+            await ChanceService.CreateChance(chance);
             await PlayerService.CreatePlayer(player);
         }
         else
@@ -82,9 +91,11 @@ else
         }
     }
 
+    // Deletes a Player's Chance object upon the Player's deletion
     async Task DeletePlayer()
     {
+        await ChanceService.DeleteChance(player.PlayerID);
         await PlayerService.DeletePlayer(player.PlayerID);
     }
 }
-}
+

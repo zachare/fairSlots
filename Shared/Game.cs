@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+// Model for the Game class, it has a one-to-many relationship with Player
 
 namespace fairSlots.Shared
 {

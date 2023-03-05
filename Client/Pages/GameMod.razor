@@ -1,6 +1,10 @@
-﻿@page "/gamemod"
+﻿@* Page for the creation or modification of a Game object, passes in ID via URL if given *@
+@page "/gamemod"
 @page "/gamemod/{id:int}"
 @inject IGameService GameService
+@* Only to be accessed by Admin *@
+@attribute [Authorize(Roles = "Admin")]
+@using Microsoft.AspNetCore.Authorization;
 
 
 @if(ID == null)
@@ -29,6 +33,7 @@ else
     </div>
     <div>
         <label style="color:white">Player</label><br />
+        @* Creates a dropdown list of all Players using GameService's list of Players*@
         <InputSelect @bind-Value="game.PlayerID" class="form-select">
             @foreach(var player in GameService.Players)
             {
@@ -64,6 +69,8 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
+        // If a new Game is being created, PlayerID is set to that of the first Player's in the list
+        // This prevents the Player dropdown property from ever being submitted as empty
         if(ID == null)
         {
             game.Player = GameService.Players[0];

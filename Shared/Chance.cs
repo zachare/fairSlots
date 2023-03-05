@@ -4,14 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+// Model for Chance class, it has a one-to-one relationship with the Player class
 
 namespace fairSlots.Shared
 {
     public class Chance
     {
+        // Utilizes the Key attribute to set the foreign key as its primary key
         [Required]
-        public int ChanceID { get; set; }
-        [Required]
+        [Key]
         public int PlayerID { get; set; }
         public Player? Player { get; set; }
         [Required]

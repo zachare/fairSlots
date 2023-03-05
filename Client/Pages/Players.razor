@@ -1,21 +1,23 @@
-﻿@page "/players"
+﻿@* Page displaying a list of Players *@
+@page "/players"
 @inject IPlayerService PlayerService
 @inject IHttpClientFactory HttpClientFactory
 @inject NavigationManager NavigationManager
-@attribute [Authorize]
+@* To be accessed only by the following roles *@
+@attribute [Authorize(Roles = "User, Manager, Admin")]
 @using Microsoft.AspNetCore.Authorization;
 
 <Animation AnimationSelected="@selectedAnimation">
 <PageTitle>Player List</PageTitle>
 <h2 style="color:white">Player List</h2>
 
+@* Lists all Players and their properties in a table*@
     <table class="table">
         <thead>
             <tr style="color:white">
                 <th>Player ID</th>
                 <th>Username</th>
                 <th>Funds</th>
-                <th>Win Rate</th>
             </tr>
         </thead>
         <tbody>
@@ -32,18 +34,20 @@
                         @p.Funds
                     </td>
                     <td>
-                        @p.WinRate
-                    </td>
-                    <td>
+                        @* The edit button will only be visible for Admin and Manager as that is what the edit page allows as well*@
+                        <AuthorizeView Roles="Admin, Manager">
                         <button class="btn btn-primary" @onclick="(() => ShowPlayer(p.PlayerID))"><i class="oi oi-pencil"></i></button> |
+                        </AuthorizeView>
                     </td>
                 </tr>
             
             }
         </tbody>
-
     </table>
+    @* The create button is only visible to Admin and Manager as the create page is restricted to those roles as well*@
+    <AuthorizeView Roles="Admin, Manager">
     <button class="btn btn-primary" @onclick="CreateNewPlayer">Create New Player</button>
+    </AuthorizeView>
     </Animation>
 
 

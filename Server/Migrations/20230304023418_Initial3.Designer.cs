@@ -12,8 +12,8 @@ using fairSlots.Server.Data;
 namespace fairSlots.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230302052956_Initial4")]
-    partial class Initial4
+    [Migration("20230304023418_Initial3")]
+    partial class Initial3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,13 +27,13 @@ namespace fairSlots.Server.Migrations
 
             modelBuilder.Entity("fairSlots.Shared.Chance", b =>
                 {
-                    b.Property<int>("ChanceID")
+                    b.Property<int>("PlayerID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChanceID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlayerID"));
 
-                    b.Property<int>("PlayerID")
+                    b.Property<int?>("PlayerID1")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdateTime")
@@ -42,25 +42,23 @@ namespace fairSlots.Server.Migrations
                     b.Property<decimal>("WinRate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ChanceID");
+                    b.HasKey("PlayerID");
 
-                    b.HasIndex("PlayerID");
+                    b.HasIndex("PlayerID1");
 
                     b.ToTable("Chances");
 
                     b.HasData(
                         new
                         {
-                            ChanceID = 1,
                             PlayerID = 1,
-                            UpdateTime = new DateTime(2023, 3, 1, 21, 29, 56, 592, DateTimeKind.Local).AddTicks(4059),
+                            UpdateTime = new DateTime(2023, 3, 3, 18, 34, 17, 830, DateTimeKind.Local).AddTicks(522),
                             WinRate = 0.30m
                         },
                         new
                         {
-                            ChanceID = 2,
                             PlayerID = 3,
-                            UpdateTime = new DateTime(2023, 3, 1, 21, 29, 56, 592, DateTimeKind.Local).AddTicks(4065),
+                            UpdateTime = new DateTime(2023, 3, 3, 18, 34, 17, 830, DateTimeKind.Local).AddTicks(525),
                             WinRate = 0.27m
                         });
                 });
@@ -96,7 +94,7 @@ namespace fairSlots.Server.Migrations
                         {
                             GameID = 1,
                             BetAmount = 20.00m,
-                            Date = new DateTime(2023, 3, 1, 21, 29, 56, 592, DateTimeKind.Local).AddTicks(3908),
+                            Date = new DateTime(2023, 3, 3, 18, 34, 17, 830, DateTimeKind.Local).AddTicks(329),
                             PlayerID = 1,
                             Win = true
                         },
@@ -104,7 +102,7 @@ namespace fairSlots.Server.Migrations
                         {
                             GameID = 2,
                             BetAmount = 50.00m,
-                            Date = new DateTime(2023, 3, 1, 21, 29, 56, 592, DateTimeKind.Local).AddTicks(4025),
+                            Date = new DateTime(2023, 3, 3, 18, 34, 17, 830, DateTimeKind.Local).AddTicks(484),
                             PlayerID = 2,
                             Win = false
                         });
@@ -123,10 +121,8 @@ namespace fairSlots.Server.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("WinRate")
-                        .HasColumnType("decimal(18,2)");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.HasKey("PlayerID");
 
@@ -137,15 +133,13 @@ namespace fairSlots.Server.Migrations
                         {
                             PlayerID = 1,
                             Funds = 200.00m,
-                            Username = "Zach",
-                            WinRate = 0.50m
+                            Username = "Zach"
                         },
                         new
                         {
                             PlayerID = 2,
                             Funds = 5000.00m,
-                            Username = "Admin",
-                            WinRate = 0.99m
+                            Username = "Admin"
                         });
                 });
 
@@ -153,9 +147,7 @@ namespace fairSlots.Server.Migrations
                 {
                     b.HasOne("fairSlots.Shared.Player", "Player")
                         .WithMany()
-                        .HasForeignKey("PlayerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlayerID1");
 
                     b.Navigation("Player");
                 });

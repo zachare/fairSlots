@@ -1,68 +1,79 @@
-﻿@page "/gamehistory"
+﻿@* Page displaying a list of Games *@
+@page "/gamehistory"
 @inject IGameService GameService
 @inject IHttpClientFactory HttpClientFactory
 @inject NavigationManager NavigationManager
-@attribute [Authorize]
+@* Only to be accessed by signed-in guest *@
+@attribute [Authorize(Roles = "Admin, Manager, User")]
 @using Microsoft.AspNetCore.Authorization;
 @using fairSlots.Shared
 
 <Animation AnimationSelected="@selectedAnimation">
-<PageTitle>Game History</PageTitle>
+    <PageTitle>Game History</PageTitle>
 
-<h1 style="color:white">Game History</h1>
+    <h1 style="color:white">Game History</h1>
 
 
-@if (GameService.Games == null)
-{
-    <p style="color:white"><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr style="color:white">
-                <th>Game ID</th>
-                <th>Player</th>
-                <th>Date</th>
-                <th>Bet Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var game in GameService.Games)
-            {
+    @if (GameService.Games == null)
+    {
+        <p style="color:white"><em>Loading...</em></p>
+    }
+    else
+    {
+        @* Lists all Games and their properties in a table*@
+        <table class="table">
+            <thead>
                 <tr style="color:white">
-                    <td>
-                        @game.GameID
+                    <th>Game ID</th>
+                    <th>Player</th>
+                    <th>Date</th>
+                    <th>Bet Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var game in GameService.Games)
+                {
+                    <tr style="color:white">
+                        <td>
+                            @game.GameID
+                        </td>
+                        <td>
+                            @game.PlayerID
+                        </td>
+                        <td>
+                            @game.Date
+                        </td>
+                        <td>
+                            @* If the game was won then the bet appears as green with a + *@
+                            @* If not, then it appears red with a - *@
+                            @if (game.Win == true)
+                            {
+                        <tr style="color:limegreen">
+                            +$@game.BetAmount
+                        </tr>
+                            }
+                            else
+                            {
+                        <tr style="color:red">
+                            -$@game.BetAmount
+                        </tr>
+                            }
                     </td>
-                    <td>
-                        @game.PlayerID
-                    </td>
-                    <td>
-                        @game.Date
-                    </td>
-                    <td>
-                        @if (game.Win == true)
-                        {
-                    <tr style="color:limegreen">
-                        +$@game.BetAmount
-                    </tr>
-                        }
-                        else
-                        {
-                    <tr style="color:red">
-                        -$@game.BetAmount
-                    </tr>
-                        }
+                <td>
+                            @* Edit button only viewable as an Admin*@
+                    <AuthorizeView Roles="Admin">
+                        <button class="btn btn-primary" @onclick="(() => ShowGame(game.GameID))"><i class="oi oi-pencil"></i></button>
+                    </AuthorizeView>
                 </td>
-            <td>
-                <button class="btn btn-primary" @onclick="(() => ShowGame(game.GameID))"><i class="oi oi-pencil"></i></button>
-            </td>
-            </tr>
-            }
-        </tbody>
-    </table>
-    <button class="btn btn-primary" @onclick="CreateNewGame">Create New Game</button>
-}
+                </tr>
+                }
+            </tbody>
+        </table>
+        @* Create new game button on viewable as an Admin*@
+        <AuthorizeView Roles="Admin">
+            <button class="btn btn-primary" @onclick="CreateNewGame">Create New Game</button>
+        </AuthorizeView>
+    }
 </Animation>
 
 @code {

@@ -1,5 +1,6 @@
 ﻿namespace fairSlots.Client.Services.ChanceService
 {
+    // Initializes the IChanceService interface to be inherited by ChanceService
     public interface IChanceService
     {
         List<Chance> Chances { get; set; }

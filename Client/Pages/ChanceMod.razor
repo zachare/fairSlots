@@ -1,52 +1,59 @@
-﻿@page "/chance"
+﻿@* Page for the creation or modification of a Chance object, passes in ID via URL if given *@
+@page "/chance"
 @page "/chance/{id:int}"
 @inject IChanceService ChanceService
+@* To be accessed only by Admin role *@
+@attribute [Authorize(Roles = "Admin")]
+@using Microsoft.AspNetCore.Authorization;
 
+<Animation AnimationSelected="@selectedAnimation">
+    @if (ID == null)
+    {
+        <PageTitle>Create New Chance</PageTitle>
+        <h3 style="color:white">Create New Chance</h3>
+    }
+    else
+    {
+        <PageTitle>Edit Chance @chance.PlayerID</PageTitle>
+        <h3 style="color:white">Edit Chance @chance.PlayerID</h3>
+    }
 
-@if(ID == null)
-{
-    <PageTitle>Create New Chance</PageTitle>
-    <h3 style ="color:white">Create New Chance</h3>
-}
-else
-{
-    <PageTitle>Edit Chance @chance.ChanceID</PageTitle>
-    <h3 style="color:white">Edit Chance @chance.ChanceID</h3>
-}
-
-<EditForm Model="chance" OnValidSubmit="HandleSubmit">
+    <EditForm Model="chance" OnValidSubmit="HandleSubmit">
         <div>
             <label style="color:white">Player</label><br />
             <InputSelect @bind-Value="chance.PlayerID" class="form-select">
-                @foreach(var player in ChanceService.Players)
+                @foreach (var player in ChanceService.Players)
                 {
                     <option value="@player.PlayerID">@player.Username</option>
                 }
             </InputSelect>
         </div>
         <div>
-        <label style="color:white" for="updatetime">Update Time</label>
-        <InputDate TValue="DateTime" id="date" @bind-Value="chance.UpdateTime" class="form-control"></InputDate>
+            <label style="color:white" for="updatetime">Update Time</label>
+            <InputDate TValue="DateTime" id="date" @bind-Value="chance.UpdateTime" class="form-control"></InputDate>
         </div>
         <div>
-        <label style="color:white" for="winrate">Win Rate</label>
-        <InputNumber @bind-Value="chance.WinRate" class="form-control"></InputNumber>
+            <label style="color:white" for="winrate">Win Rate</label>
+            <InputNumber @bind-Value="chance.WinRate" class="form-control"></InputNumber>
         </div>
-    <br />
-    @if(ID != null)
-    {
-        <button type="submit" class="btn btn-primary">@btnText</button>
-        <button type="button" class="btn btn-danger" @onclick="DeleteChance">Delete Chance</button>
-    }
-    else
-    {
-        <button type="submit" class="btn btn-primary">@btnText</button>
-    }
-</EditForm>
+        <br />
+        @if (ID != null)
+        {
+            <button type="submit" class="btn btn-primary">@btnText</button>
+            <button type="button" class="btn btn-danger" @onclick="DeleteChance">Delete Chance</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary">@btnText</button>
+        }
+    </EditForm>
+</Animation>
 
 @code {
     [Parameter]
     public int? ID { get; set; }
+
+    public string selectedAnimation = "";
 
     string btnText = string.Empty;
 
@@ -60,7 +67,9 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        if(ID == null)
+        // Automatically sets a new Chance's Player to the first Player to avoid an null PlayerID
+        // property from being submitted
+        if (ID == null)
         {
             chance.Player = ChanceService.Players[0];
             chance.PlayerID = chance.Player.PlayerID;
@@ -73,7 +82,7 @@ else
 
     async Task HandleSubmit()
     {
-        if(ID == null)
+        if (ID == null)
         {
             await ChanceService.CreateChance(chance);
         }
@@ -85,6 +94,6 @@ else
 
     async Task DeleteChance()
     {
-        await ChanceService.DeleteChance(chance.ChanceID);
+        await ChanceService.DeleteChance(chance.PlayerID);
     }
 }

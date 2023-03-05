@@ -1,8 +1,10 @@
-﻿@page "/chances"
+﻿@* Page displaying a list of Chances *@
+@page "/chances"
 @inject IChanceService ChanceService
 @inject IHttpClientFactory HttpClientFactory
 @inject NavigationManager NavigationManager
-@attribute [Authorize]
+@* Only to be accessed by Admin and Manager roles*@
+@attribute [Authorize(Roles = "Admin, Manager")]
 @using Microsoft.AspNetCore.Authorization;
 @using fairSlots.Shared
 
@@ -20,7 +22,6 @@ else
     <table class="table">
         <thead>
             <tr style="color:white">
-                <th>Chance ID</th>
                 <th>Player ID</th>
                 <th>Update Time</th>
                 <th>Win Rate</th>
@@ -31,9 +32,6 @@ else
             {
                 <tr style="color:white">
                     <td>
-                        @chance.ChanceID
-                    </td>
-                    <td>
                         @chance.PlayerID
                     </td>
                     <td>
@@ -43,13 +41,15 @@ else
                         @chance.WinRate
                     </td>
                     <td>
-                        <button class="btn btn-primary" @onclick="(() => ShowChance(chance.ChanceID))"><i class="oi oi-pencil"></i></button>
+                        @* Edit button only viewable by Admin*@
+                        <AuthorizeView Roles="Admin">
+                        <button class="btn btn-primary" @onclick="(() => ShowChance(chance.PlayerID))"><i class="oi oi-pencil"></i></button>
+                        </AuthorizeView>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <button class="btn btn-primary" @onclick="CreateNewChance">Create New Chance</button>
 }
 </Animation>
 

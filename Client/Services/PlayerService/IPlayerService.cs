@@ -2,6 +2,7 @@
 
 namespace fairSlots.Client.Services.PlayerService
 {
+    // Initializes the IPlayerService interface to be inherited by PlayerService
     public interface IPlayerService
     {
         List<Player> Players { get; set; }
